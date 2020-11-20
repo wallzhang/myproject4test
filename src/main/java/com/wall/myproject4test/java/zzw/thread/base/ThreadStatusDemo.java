@@ -1,4 +1,4 @@
-package com.wall.myproject4test.java.zzw.inf4demo.thread.base;
+package com.wall.myproject4test.java.zzw.thread.base;
 
 import java.util.concurrent.TimeUnit;
 
