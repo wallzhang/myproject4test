@@ -16,6 +16,7 @@ public class ThreadStatusDemo {
             while(true){
                 try {
                     TimeUnit.SECONDS.sleep(100);
+                    System.out.println("Time_Wating_Demo");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -27,6 +28,7 @@ public class ThreadStatusDemo {
                 synchronized (ThreadStatusDemo.class){
                     try {
                         ThreadStatusDemo.class.wait(); //等待阻塞
+                        System.out.println("Wating");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
