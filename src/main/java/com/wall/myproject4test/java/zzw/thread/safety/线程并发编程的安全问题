@@ -1,0 +1,51 @@
+本模块主要介绍内容如下。
+整理思路
+1.什么会导致并发编程的问题.
+原子性：
+操作步骤有多步，只能同时成功或者同时失败才行
+如常见的i++;其实编译后分了3步  getStatics  +1  setStatics
+具体可以查看图1-1
+可见性：
+查看图1-2，其实就是JMM模型，CPU运行有缓存区域，内存有缓存区域。运行效率肯定是CPU更
+快如果有线程1和2依次执行，保证可见性，就是把1的执行属性放到内存缓存区，
+让1的执行结果对2可见
+有序性：
+具体可参考看图1-3，1-4，简单来说就是不做任何操作的，可能有几层重排序，最终的执行
+顺序不会简单和编译期的顺序一致
+2.Java怎么避免了并发编程模型（JMM,和解决方案）
+Java内存模型是一种抽象结构，它提供了合理的禁用缓存以及禁止重排序
+的方法来解决可见性、有序性问题
+解决方案参考问题3
+3.解决方案细讲
+Synchronized：解决原子性，可见性，有序性。
+锁范围
+    1)普通同步方法   // 对象锁 synchronized void demo()
+    2)静态同步方法   // 类级别锁 synchronized static void demo2()
+    3)同步方法块     // 取决于上锁的对象如synchronized(this) ,sync(xxx.class)
+volatile:可见性，有序性
+    实现原理:修饰属性后给类添加内存屏障
+    功能:
+        1)保证修饰属性的内存可见性。
+        2)防止执行的重排序保证有序性
+final：
+happens-before：前面一个操作的结果对后续操作是可见的
+常见的6种Happens-Before规则
+a 程序顺序规则
+b 监视器锁规则
+c Volatile变量规则
+d 传递性
+e start()规则
+f Join()规则
+4.ThreadLocal能解决怎么问题
+简单来说就是针对特定的应用场景设计的。多线程的时候希望初始化一个变量并对它进行操作
+基础写法(感觉没怎么用过)
+public static final ThreadLocal<Integer> local=new ThreadLocal<Integer>(){
+    @Override
+    protected Integer initialValue(){
+        return 0; //初始值
+    }
+};
+
+可以查看有道笔记
+文档：并发编程安全问题.note
+链接：http://note.youdao.com/noteshare?id=3305b86bb1cfb7d6d99b5214de069225&sub=7BF59E5BEAED4D69B54A51F6E3F248EC
