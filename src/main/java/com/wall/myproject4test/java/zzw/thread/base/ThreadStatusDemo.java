@@ -16,25 +16,25 @@ public class ThreadStatusDemo {
             while(true){
                 try {
                     TimeUnit.SECONDS.sleep(100);
-                    System.out.println("Time_Wating_Demo");
+                    System.out.println("Time_Waiting_Demo");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        },"Time_Wating_Demo").start();
+        },"Time_Waiting_Demo").start();
         //WAITING
         new Thread(()->{
             while(true){
                 synchronized (ThreadStatusDemo.class){
                     try {
                         ThreadStatusDemo.class.wait(); //等待阻塞
-                        System.out.println("Wating");
+                        System.out.println("Waiting");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             }
-        },"Wating").start();
+        },"Waiting").start();
         new Thread(new BlockedDemo(),"Blocked-Demo-01").start();
         new Thread(new BlockedDemo(),"Blocked-Demo-02").start();
     }

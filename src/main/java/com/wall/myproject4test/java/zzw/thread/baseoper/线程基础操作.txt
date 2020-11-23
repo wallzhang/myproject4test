@@ -1,0 +1,12 @@
+这块代码主要介绍了:
+1.Thread.join方法(保证执行结果可见)
+2.Thread.sleep方法(线程进入等待或者超时等待状态)
+3.Thread.wait和notify/notifyAll(如何实现多线程情形下的通信，典型的生产消费)
+4.Thread.interrupt和interrupted(通过改变线程的interrupt属性，友好的控制线程终止)
+5.interrupt使用场景
+
+具体解答可以参考
+文档：线程的基础操作和原理.note
+链接：http://note.youdao.com/noteshare?id=fd0209ec3ad336ef29498f2eaeadb433&sub=DC96B41E36A346DFA6F13FAB2591D157
+
+注：文档上有两个面试问题彩蛋，同时介绍了不同的系统（linux，windows）线程的调度算法
