@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class ThreadStatusDemo {
 
     public static void main(String[] args) {
-        //TIME_WAITING
+        //TIME_WAITING （sleep（long）,wait(long),join(long)）
         new Thread(()->{
             while(true){
                 try {
@@ -22,7 +22,7 @@ public class ThreadStatusDemo {
                 }
             }
         },"Time_Waiting_Demo").start();
-        //WAITING
+        //WAITING(wait(),join())
         new Thread(()->{
             while(true){
                 synchronized (ThreadStatusDemo.class){
@@ -36,7 +36,7 @@ public class ThreadStatusDemo {
             }
         },"Waiting").start();
         new Thread(new BlockedDemo(),"Blocked-Demo-01").start();
-        new Thread(new BlockedDemo(),"Blocked-Demo-02").start();
+        new Thread(new BlockedDemo(),"Blocked-Demo-02").start();// block
     }
     static class BlockedDemo extends  Thread{
         public void run(){
