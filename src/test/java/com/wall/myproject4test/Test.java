@@ -6,15 +6,18 @@ import java.util.StringJoiner;
 
 public class Test {
     public static void main(String[] args) {
-        Set<String> staffIds = new HashSet<>();
-        staffIds.add("123");
-        staffIds.add("1234");
-        staffIds.add("12345");
-        StringJoiner finalStaffIds = new StringJoiner(",");
-        staffIds.forEach(item->{
-            finalStaffIds.add(item);
-//			finalStaffIds.append(item + ",");
-        });
-        System.out.println("finalStaffIds.toString():"+finalStaffIds.toString());
+        int CAPACITY   = (1 << Integer.SIZE - 3) - 1;
+        System.out.println(CAPACITY);
+        System.out.println(536870913 & CAPACITY);
+//        Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                System.out.print("foo");
+//            }
+//        };
+//        Thread thread = new Thread(runnable);
+//        thread.start();
+//        System.out.print("ball");
+//        System.out.println("----------");
     }
 }

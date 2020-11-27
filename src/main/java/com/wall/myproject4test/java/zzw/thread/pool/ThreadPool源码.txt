@@ -1,0 +1,77 @@
+1、4种常见的线程池和他们底层实现的原理。
+ // 线程数量固定的线程池,当创建的线程大于定义的值的时候，加入到等待队列
+ExecutorService executor = Executors.newFixedThreadPool(3);
+实现: return new ThreadPoolExecutor(nThreads, nThreads,
+                                         0L, TimeUnit.MILLISECONDS,
+                                         new LinkedBlockingQueue<Runnable>())
+// 单个线程的线程池
+ExecutorService executor2 = Executors.newSingleThreadExecutor();
+实现:  return new FinalizableDelegatedExecutorService
+                (new ThreadPoolExecutor(1, 1,
+                                        0L, TimeUnit.MILLISECONDS,
+                                        new LinkedBlockingQueue<Runnable>()));
+// 可动态伸缩的线程池
+ExecutorService executor3 = Executors.newCachedThreadPool();
+实现:  return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                                          60L, TimeUnit.SECONDS,
+                                          new SynchronousQueue<Runnable>());
+// 可定时的线程池
+ExecutorService executor4 = Executors.newScheduledThreadPool(3);
+实现: return new ScheduledThreadPoolExecutor(corePoolSize);
+ super(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS,
+              new DelayedWorkQueue())
+参数解析:
+ThreadPoolExecutor(int corePoolSize, // 核心线程数
+int maximumPoolSize, // 最大线程数
+long keepAliveTime,  // 超出时间,超出核心线程数量以外的线程空余存活时间
+TimeUnit unit,    // 存活时间单位
+BlockingQueue<Runnable> workQueue, // 保存执行任务的队列
+ThreadFactory threadFactory,  // 创建新线程使用的工厂
+RejectedExecutionHandler handler // 当任务无法执行的时候的处理方法)
+
+
+execute方法解析
+ public void execute(Runnable command) {
+        if (command == null)
+            throw new NullPointerException();
+        /*
+         * Proceed in 3 steps:
+         *
+         * 1. If fewer than corePoolSize threads are running, try to
+         * start a new thread with the given command as its first
+         * task.  The call to addWorker atomically checks runState and
+         * workerCount, and so prevents false alarms that would add
+         * threads when it shouldn't, by returning false.
+         *
+         * 2. If a task can be successfully queued, then we still need
+         * to double-check whether we should have added a thread
+         * (because existing ones died since last checking) or that
+         * the pool shut down since entry into this method. So we
+         * recheck state and if necessary roll back the enqueuing if
+         * stopped, or start a new thread if there are none.
+         *
+         * 3. If we cannot queue task, then we try to add a new
+         * thread.  If it fails, we know we are shut down or saturated
+         * and so reject the task.
+         */
+         // 查询现有的运行线程数
+        int c = ctl.get();
+        // 如果查询的线程数小于核心线程数,将线程加入到子线程执行队列（true代表是核心线程，类似编制）
+        if (workerCountOf(c) < corePoolSize) {
+            if (addWorker(command, true))
+                return;
+            c = ctl.get();
+        }
+        // isRunning大多数情况返回true，和2^32次方比较大小
+        // workQueue.offer(command)将线程加入到队列，未满false等待处理，
+        // 已满ture 判断是否超过最大线程数，是执行饱和策略，否执行addWorker(command, false)将线程加入到执行队列（false可以类比是外包）
+        if (isRunning(c) && workQueue.offer(command)) {
+            int recheck = ctl.get();
+            if (! isRunning(recheck) && remove(command))
+                reject(command);
+            else if (workerCountOf(recheck) == 0)
+                addWorker(null, false);
+        }
+        else if (!addWorker(command, false))
+            reject(command);
+    }
