@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 
 /**
  * @description:个人定制接口-针对IO相关
@@ -284,6 +285,122 @@ public class MySwaggerInf4Io {
                 if(logger.isInfoEnabled()){
                     logger.info("完成类型转换！！转行结果如下");
                     logger.info(st.toString());
+                }
+            }else {
+                throw new Exception("传入的文件路径为:" + ioRequestOnXlsBean.getFilePath() + "存在问题请检查！");
+            }
+            ioReturnBean.setCode("0");
+            ioReturnBean.setRes("处理成功");
+        }catch (Exception e){
+            logger.error(e.getLocalizedMessage(),e);
+            ioReturnBean.setCode("1");
+            ioReturnBean.setCode(e.toString());
+        }
+        long time = System.currentTimeMillis() - startTime;
+        ioReturnBean.setDealTime(String.valueOf(time));
+        return ioReturnBean;
+    }
+
+    @RequestMapping(value = "createCloudTableJSByXls",method = RequestMethod.POST)
+    @ApiOperation(value = "针对云网业务,生成艺龙所需的js属性",notes = "针对云网业务,生成艺龙所需的js属性")
+    public IoReturnBean createCloudTableJSByXls(@ApiParam(name = "ioRequestOnXlsBean",required = true) @RequestBody IoRequestOnXlsBean ioRequestOnXlsBean){
+        long startTime = System.currentTimeMillis();
+        IoReturnBean ioReturnBean = new IoReturnBean();
+        JSONObject jsonObjectStr = JSONObject.fromObject(ioRequestOnXlsBean);
+        if(logger.isInfoEnabled()){
+            logger.info("读xls文件，按行输出入参ioRequestOnXlsBean为:"+jsonObjectStr);
+        }
+        try {
+            String filePath = ioRequestOnXlsBean.getFilePath();
+            File excelFile = new File(filePath);
+            if(excelFile.exists()){
+                // 获取Excel工作簿
+                String fileType = filePath.substring(filePath.lastIndexOf(".") + 1);
+                FileInputStream inputStream = new FileInputStream(excelFile);
+                Workbook workbook = null;
+                if (fileType.equalsIgnoreCase(XLS)) {
+                    workbook = new HSSFWorkbook(inputStream);
+                } else if (fileType.equalsIgnoreCase(XLSX)) {
+                    workbook = new XSSFWorkbook(inputStream);
+                }else {
+                    throw new Exception("文件类型为："+fileType+"错误，请检查!");
+                }
+                //开始解析,默认读取第一页
+                Sheet sheet = workbook.getSheetAt(0);
+                // 默认规则第一行第一列为属性说明不做读取
+                // 从第二行开始解析，数据demo：    字段编码	元素类型	字段名称	限定（M为必填，C和O为选填）	取值说明	枚举
+                Row row = null;
+
+                StringBuilder sb = new StringBuilder();
+                String enumTemplate = "                                { name: \"{#enumName}\", value: \"{#enumValue}\" }";
+                int count = 0;
+                for (int i = 1; i < sheet.getLastRowNum()+1; i++){
+                    row = sheet.getRow(i);
+                    // Object ，Array对象跳出此次循环
+                    if( row.getCell(1).getStringCellValue().contains("Object")||
+                            row.getCell(1).getStringCellValue().contains("Array")){
+                        continue;
+                    }
+                    if(count==0){
+                        sb.append("                {\n" +
+                                "                    row: [\n");
+                    }
+                    StringJoiner enumSj = new StringJoiner(",\n");
+                    // 属性值
+                    String code = row.getCell(0).getStringCellValue();
+                    // 是否需要下拉框枚举
+                    Boolean isBox = "下拉框".equals(row.getCell(1).getStringCellValue())?true:false;
+                    // name
+                    String name = row.getCell(2).getStringCellValue();
+                    // require
+                    String require = "M".equals(row.getCell(3).getStringCellValue())?"true":"false";
+                    // 枚举
+                    String enumsList =  "";
+
+                    // 开始拼接 一个参数
+                    sb.append("                        {\n");
+                    sb.append("                            code:\""+code+"\",\n");
+                    sb.append("                            name:\""+name+"\",\n");
+                    sb.append("                            disable:false,\n");
+                    if(isBox){
+                        enumsList = row.getCell(5).getStringCellValue();
+                        sb.append("                            require:"+require+",\n");
+                        sb.append("                            enum:[\n");
+                        String[] enums = enumsList.split("、");
+                        if(enums[0].contains("-")){
+                            for (String str:enums){
+                               String[] enumsVal = str.split("-");
+                                enumSj.add(enumTemplate.replace("{#enumName}",enumsVal[1]).
+                                        replace("{#enumValue}",enumsVal[0]));
+                            }
+                        }else {
+                            for (String str:enums){
+                                enumSj.add(enumTemplate.replace("{#enumName}",str).
+                                        replace("{#enumValue}",str));
+                            }
+                        }
+                        sb.append(enumSj.toString());
+                        // 枚举插入完成记得清空
+//                        enumSj.setEmptyValue("");
+                        sb.append("\n                            ]\n");
+                    }else {
+                        sb.append("                            require:"+require+"\n");
+                    }
+                    // 拼接完成count计数+1
+                    count++;
+                    if(count == 2){
+                        sb.append("                        }\n");
+                        sb.append("                    ]\n" +
+                                "                },\n");
+                        // 对count进行清空
+                        count = 0;
+                    }else {
+                        sb.append("                        },\n");
+                    }
+                }
+                if(logger.isInfoEnabled()){
+                    logger.info("完成类型转换！！转行结果如下");
+                    logger.info(sb.toString());
                 }
             }else {
                 throw new Exception("传入的文件路径为:" + ioRequestOnXlsBean.getFilePath() + "存在问题请检查！");
