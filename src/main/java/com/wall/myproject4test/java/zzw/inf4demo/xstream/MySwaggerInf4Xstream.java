@@ -7,6 +7,8 @@ import com.wall.myproject4test.java.zzw.inf4demo.utils.ParseUtil;
 import com.wall.myproject4test.java.zzw.inf4demo.xstream.model.XsteamDemo2ReqBean;
 import com.wall.myproject4test.java.zzw.inf4demo.xstream.model.XsteamDemo3ReqBean;
 import com.wall.myproject4test.java.zzw.inf4demo.xstream.model.XsteamDemoReqBean;
+import com.wall.myproject4test.java.zzw.inf4demo.xstream.model.common.CommonRequestBeanOss;
+import com.wall.myproject4test.java.zzw.inf4demo.xstream.model.common.OpDetailBeanOss;
 import com.wall.myproject4test.java.zzw.inf4demo.xstream.model.irmsmodel.FieldInfoBeanFjIrms;
 import com.wall.myproject4test.java.zzw.inf4demo.xstream.model.irmsmodel.OpDetailBeanFjIrms;
 import io.swagger.annotations.Api;
@@ -66,6 +68,21 @@ public class MySwaggerInf4Xstream {
         if(logger.isInfoEnabled()){
             logger.info("MySwaggerInf4Xstream.tranXmlByComplexBean共计耗时:" + costTime);
             logger.info("MySwaggerInf4Xstream.tranXmlByComplexBean返回XML:" + xml);
+        }
+        return xml;
+    }
+
+    @RequestMapping(value = "tranXmlByO4Bean",method = RequestMethod.POST)
+    @ApiOperation(value = "基于javaBean(包含数组队列等)，按行xml",notes = "基于javaBean基于javaBean(包含数组队列等)，按行xml")
+    public String tranXmlByO4Bean(@ApiParam(name = "tranXmlByBean",value = "基于javaBean，按行xml",required = true) @RequestBody CommonRequestBeanOss commonRequestBeanOss) {
+        long startTime = System.currentTimeMillis();
+        XStream xstream = new XStream(new Xpp3Driver(new NoNameCoder()));
+        xstream.processAnnotations(OpDetailBeanOss.class);
+        String xml = xstream.toXML(commonRequestBeanOss.getOpDetail());
+        long costTime = System.currentTimeMillis() -  startTime;
+        if(logger.isInfoEnabled()){
+            logger.info("MySwaggerInf4Xstream.tranXmlByO4Bean共计耗时:" + costTime);
+            logger.info("MySwaggerInf4Xstream.tranXmlByO4Bean返回XML:" + xml);
         }
         return xml;
     }
