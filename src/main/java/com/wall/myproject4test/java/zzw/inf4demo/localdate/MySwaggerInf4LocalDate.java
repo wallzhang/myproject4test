@@ -48,6 +48,7 @@ public class MySwaggerInf4LocalDate {
     public String qryLocalTime() {
         long startTime = System.currentTimeMillis();
         LocalTime localTime = LocalTime.now();
+        String format = localTime.format(DateTimeFormatter.ofPattern("HH:ss:mm"));
         if(logger.isInfoEnabled()){
             logger.info("localTime:" + localTime);
             logger.info("共计耗时:" + String.valueOf(System.currentTimeMillis()-startTime));
@@ -60,7 +61,7 @@ public class MySwaggerInf4LocalDate {
     public String qryLocalDateTime() {
         long startTime = System.currentTimeMillis();
         LocalDateTime localDateTime = LocalDateTime.now();
-        String format = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:ss:mm"));
+        String format = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         if(logger.isInfoEnabled()){
             logger.info("localDateTime:" + format);
             logger.info("共计耗时:" + String.valueOf(System.currentTimeMillis()-startTime));
