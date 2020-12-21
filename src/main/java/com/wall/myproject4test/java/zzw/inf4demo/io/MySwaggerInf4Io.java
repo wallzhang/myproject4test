@@ -118,7 +118,9 @@ public class MySwaggerInf4Io {
                         "\n");
                 // 从第二行开始解析，数据demo：     张三||姓名||String
                 Row row = null;
-                String templateStr = "    @ApiModelProperty(value = \"{arg0}\",required = true)\n" +
+                String templateStr =
+                        "    @XStreamAlias(\"{arg2}\")\n" +
+                        "    @ApiModelProperty(value = \"{arg0}\")\n" +
                         "    public {arg1} {arg2};\n" +
                         "\n";
                 String resStr = "";
