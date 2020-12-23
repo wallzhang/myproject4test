@@ -2,7 +2,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <!--添加需要被容器关联的类型-->
-    <bean class="com.wall.myproject4test.spring.ioc4study.model.UserDemo" id="userDemo" name="userDemo2"/>
-    <bean class="com.wall.myproject4test.spring.ioc4study.model.UserDemo" id="user1" name="u2" />
+    <!--  通过静态工厂的方式注入 -->
+    <bean class="com.wall.myproject4test.spring.ioc4study.factory.StaticFactoryDemo" factory-method="getInstance" id="user"></bean>
 </beans>
