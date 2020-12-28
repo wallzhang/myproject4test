@@ -9,9 +9,7 @@ import io.swagger.annotations.ApiParam;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.MapUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -185,21 +183,38 @@ public class MySwaggerInf4Io {
                 Sheet sheet = workbook.getSheetAt(0);
                 StringBuilder st = new StringBuilder();
                 Row row = null;
-                String templateStr = "INSERT INTO ISA_COMPANY_NOTE_ASSIGN_MAP SET COMPANY_NAME = '{arg0}' ,NAME = '{arg1}' ,TELEPHONE = '{arg2}',STATE = '10A';\n";
+                String templateStr = "INSERT INTO TASK_TACHE_CODE (ID, TACHE_CODE, COMMENTS) values ('{arg1}','Axxxx','{arg0}');\n";
                 String resStr = "";
                 for (int i = 0; i < sheet.getLastRowNum(); i++){
                     row = sheet.getRow(i);
                     // 公司名
                     String arg0 = row.getCell(0).getStringCellValue();
                     // 主管名称
-                    String arg1 = row.getCell(1).getStringCellValue();
+                    Cell cell1 =row.getCell(1);
+                    cell1.setCellType(CellType.STRING);
+                    String arg1 = cell1.getStringCellValue();
                     // 主管电话
-                    String arg2 = row.getCell(2).getStringCellValue();
+                    Cell cell2 =row.getCell(2);
+                    cell2.setCellType(CellType.STRING);
+                    String arg2 = cell2.getStringCellValue();
+                    // 主管电话
+                    Cell cell3 =row.getCell(3);
+                    cell3.setCellType(CellType.STRING);
+                    String arg3 = cell3.getStringCellValue();
+                    // 主管电话
+                    Cell cell4 =row.getCell(4);
+                    cell4.setCellType(CellType.STRING);
+                    String arg4 = cell4.getStringCellValue();
                     // 因为文档内的类型常常存在特别的形式，如String(123)
                     // 所以这边需要做一次校验
 //                    propertyType = qryTruePropertyType(propertyType);
-                    resStr = templateStr.replace("{arg0}",arg0).replace("{arg1}",arg1)
-                            .replace("{arg2}",arg2);
+                    resStr = templateStr.replace("{arg0}",arg0).replace("{arg1}",arg1);
+                    st.append(resStr);
+                    resStr = templateStr.replace("{arg0}",arg0).replace("{arg1}",arg2);
+                    st.append(resStr);
+                    resStr = templateStr.replace("{arg0}",arg0).replace("{arg1}",arg3);
+                    st.append(resStr);
+                    resStr = templateStr.replace("{arg0}",arg0).replace("{arg1}",arg4);
                     st.append(resStr);
                 }
                 st.append("}");
