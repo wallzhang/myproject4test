@@ -50,4 +50,15 @@ public class IUserDaoImpl implements IUserDao{
             logger.info("res:" + res);
         }
     }
+
+    @Override
+    public void insertWallDemo2(WallDemo wallDemo) {
+        String sql = "INSERT INTO WALL_DEMO (ID,NAME,AGE) VALUES (?,?,?)";
+        // 语句1
+        int res = jdbcTemplate.update(sql,wallDemo.getId(),wallDemo.getName(),wallDemo.getAge());
+        int res2 = jdbcTemplate.update(sql,wallDemo.getId()+1,wallDemo.getName(),wallDemo.getAge()+1);
+        if(logger.isInfoEnabled()){
+            logger.info("res:" + res);
+        }
+    }
 }

@@ -29,4 +29,8 @@ public class IUserServiceImpl implements IUserService{
         iUserDao.insertWallDemo(wallDemo);
     }
 
+    @Override
+    public void insertWallDemo2(WallDemo wallDemo) {
+        iUserDao.insertWallDemo2(wallDemo);
+    }
 }

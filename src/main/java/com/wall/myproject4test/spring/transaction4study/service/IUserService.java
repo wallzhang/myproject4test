@@ -23,4 +23,10 @@ public interface IUserService {
      * @param wallDemo
      */
     public void insertWallDemo(WallDemo wallDemo);
+
+    /**
+     * 插表操作2
+     * @param wallDemo
+     */
+    public void insertWallDemo2(WallDemo wallDemo);
 }
