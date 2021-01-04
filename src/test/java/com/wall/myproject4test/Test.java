@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Test {
     private static Logger logger = LoggerFactory.getLogger(Test.class);
@@ -13,16 +14,23 @@ public class Test {
     static int age ;
     public static void main(String[] args) {
 
-        int[][] res = new int[4][2];
-//        Stack stack = new Stack();
-//        List list = new ArrayList();
-//        list.sort(Comparator.comparingInt(Integer::intValue));
-//        char[] chars = "{hello}".toCharArray();
-//        for (int i = 0; i < chars.length; i++) {
-//            System.out.println(chars[i]);
-//        }
-        int[] A = {1,1,5,2,3};
-        System.out.println(new  Test().largestPerimeter(A));
+//        int[][] res = new int[4][2];
+////        Stack stack = new Stack();
+////        List list = new ArrayList();
+////        list.sort(Comparator.comparingInt(Integer::intValue));
+////        char[] chars = "{hello}".toCharArray();
+////        for (int i = 0; i < chars.length; i++) {
+////            System.out.println(chars[i]);
+////        }
+//        int[] A = {1,1,5,2,3};
+//        System.out.println(new  Test().largestPerimeter(A));
+
+//        int[] arr1 = {2,3,1,3,2,4,6,7,9,2,19};
+        int[] arr1 = {2,3,1,3,2};
+//        int[] arr2 = {2,1,4,3,9,6};
+        int[] arr2 = {2,1};
+        int[] res = new Test().relativeSortArray(arr1,arr2);
+        System.out.println(res);
     }
 
     private int[] res(){
@@ -82,38 +90,80 @@ public class Test {
                 res[t][1] = j;
             }
         }
-        Arrays.sort(res, (arr1, arr2) -> {
-            int d1 = dist(arr1[0], arr1[1], r0, c0);
-            int d2 = dist(arr2[0], arr2[1], r0, c0);
-            return Integer.compare(d1, d2);
-        });
+//        Arrays.sort(res, (arr1, arr2) -> {
+//            int d1 = dist(arr1[0], arr1[1], r0, c0);
+//            int d2 = dist(arr2[0], arr2[1], r0, c0);
+//            return Integer.compare(d1, d2);
+//        });
 //        // 从 (r0, c0) 到其他单元格的距离为：[0,1]
-//        res[0][0] = r0;
-//        res[0][1] = c0;
-//        int rowFlag = 1;
-//        int cowFlag = 1;
-//        for (int i = 1; i < R*C; i++) {
-//            if(r0+rowFlag < R) {
-//                // 检查右移是否满足要求
-//                res[i][0] = r0 + rowFlag;
-//                res[i][1] = c0;
-//            }else if(r0 - rowFlag >= 0){
-//                res[i][0] = r0 - rowFlag;
-//                res[i][1] = c0;
-//            }else if(c0 + cowFlag < C){
-//                res[i][0] = r0;
-//                res[i][1] = c0 + cowFlag;
-//            }else if(c0 - cowFlag >= 0){
-//                res[i][0] = r0;
-//                res[i][1] = c0 - cowFlag;
-//            }else {
-//                continue;
-//            }
-//        }
+        res[0][0] = r0;
+        res[0][1] = c0;
+        int rowFlag = 1;
+        int cowFlag = 1;
+        boolean flagUp = true;
+        boolean flagDown = true;
+        boolean flagLeft = true;
+        boolean flagRight = true;
+        for (int i = 1; i < R*C; i++) {
+            if(r0+rowFlag < R && flagUp) {
+                // 检查右移是否满足要求
+                res[i][0] = r0 + rowFlag;
+                res[i][1] = c0;
+                flagUp = false;
+            }else if(r0 - rowFlag >= 0 && flagDown){
+                res[i][0] = r0 - rowFlag;
+                res[i][1] = c0;
+                flagDown = false;
+            }else if(c0 + cowFlag < C && flagLeft){
+                res[i][0] = r0;
+                res[i][1] = c0 + cowFlag;
+                flagLeft = false;
+            }else if(c0 - cowFlag >= 0 && flagRight){
+                res[i][0] = r0;
+                res[i][1] = c0 - cowFlag;
+                flagRight = false;
+            }else {
+                flagUp = true;
+                flagDown = true;
+                flagLeft = true;
+                flagRight = true;
+                rowFlag +=1;
+                cowFlag +=1;
+                continue;
+            }
+        }
         return res;
     }
 
     private int dist(int r1,int c1,int r2,int c2) {
         return Math.abs(r1 - r2) + Math.abs(c1 - c2);
+    }
+
+
+    public int[] relativeSortArray(int[] arr1, int[] arr2) {
+        int[] res = new int[arr1.length];
+        // res数组标识
+        int flagB = 0;
+        for (int i = 0; i < arr2.length; i++) {
+            for (int j = 0; j < arr1.length; j++) {
+                 if(arr2[i]==arr1[j]){
+                     res[flagB] = arr2[i];
+                     flagB++;
+                 }
+            }
+        }
+        List list = Arrays.stream(arr2).boxed().collect(Collectors.toList());
+        List<Integer> integers = new ArrayList<>();
+
+        for (int i = 0; i < arr1.length; i++) {
+            if(!list.contains(arr1[i])){
+                integers.add(arr1[i]);
+            }
+        }
+        int[] arr3 = integers.stream().mapToInt(Integer::valueOf).toArray();
+
+        Arrays.sort(arr3);
+        System.arraycopy(arr3,0,res,flagB,arr3.length);
+        return res;
     }
 }
