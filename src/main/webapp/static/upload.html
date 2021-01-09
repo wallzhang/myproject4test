@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传</title>
+</head>
+<body>
+    <h1>文件上传</h1>
+    <h2><a href="/user4test/download">文件下载</a></h2>
+    <form action="/user4test/upload" method="post" enctype="multipart/form-data">
+        <label>名称:</label><input type="text" name="username"><br>
+        <label>文件:</label><input type="file" name="upload"><br>
+        <input type="submit" value="提交">
+    </form>
+</body>
+</html>
