@@ -1,0 +1,5 @@
+#####单元测试类路径interview.test.TestMain
+为了方便单元测试。这边将基础javaBean类都添加了新的构造函数
+#####Question1,和Question2这边自定义了比较器
+Question1比较器：Compare4Question1
+Question2比较器：Compare4ExtType
