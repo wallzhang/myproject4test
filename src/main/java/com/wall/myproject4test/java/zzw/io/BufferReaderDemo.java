@@ -14,7 +14,10 @@ public class BufferReaderDemo {
 
     public static void main(String[] args) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("D://t2.txt"))){
-            System.out.println(bufferedReader.readLine());
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null){
+                System.out.println(line);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
