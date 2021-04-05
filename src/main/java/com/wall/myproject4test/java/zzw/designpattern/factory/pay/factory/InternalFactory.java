@@ -1,6 +1,6 @@
-package com.wall.myproject4test.java.zzw.pay.factory;
+package com.wall.myproject4test.java.zzw.designpattern.factory.pay.factory;
 
-import com.wall.myproject4test.java.zzw.pay.product.internal.InternalPay;
+import com.wall.myproject4test.java.zzw.designpattern.factory.pay.product.internal.InternalPay;
 
 /**
  * 国内支付工厂

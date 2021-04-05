@@ -1,4 +1,4 @@
-package com.wall.myproject4test.java.zzw.pay.factory;
+package com.wall.myproject4test.java.zzw.designpattern.factory.pay.factory;
 
 
 /**

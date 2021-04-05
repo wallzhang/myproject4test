@@ -1,7 +1,7 @@
-package com.wall.myproject4test.java.zzw.pay.factory;
+package com.wall.myproject4test.java.zzw.designpattern.factory.pay.factory;
 
 
-import com.wall.myproject4test.java.zzw.pay.product.abroad.AbroadPay;
+import com.wall.myproject4test.java.zzw.designpattern.factory.pay.product.abroad.AbroadPay;
 
 /**
  * 境外支付工厂

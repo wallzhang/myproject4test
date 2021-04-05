@@ -1,10 +1,10 @@
-package com.wall.myproject4test.java.zzw.pay.test;
+package com.wall.myproject4test.java.zzw.designpattern.factory.pay.test;
 
 
-import com.wall.myproject4test.java.zzw.pay.factory.AbroadFactory;
-import com.wall.myproject4test.java.zzw.pay.factory.InternalFactory;
-import com.wall.myproject4test.java.zzw.pay.test.payenum.AbroadPayEnum;
-import com.wall.myproject4test.java.zzw.pay.test.payenum.InternalPayEnum;
+import com.wall.myproject4test.java.zzw.designpattern.factory.pay.factory.AbroadFactory;
+import com.wall.myproject4test.java.zzw.designpattern.factory.pay.factory.InternalFactory;
+import com.wall.myproject4test.java.zzw.designpattern.factory.pay.test.payenum.AbroadPayEnum;
+import com.wall.myproject4test.java.zzw.designpattern.factory.pay.test.payenum.InternalPayEnum;
 
 /**
  * 测试类

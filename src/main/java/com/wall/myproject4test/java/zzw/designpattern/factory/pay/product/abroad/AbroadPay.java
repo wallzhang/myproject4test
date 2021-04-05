@@ -1,4 +1,4 @@
-package com.wall.myproject4test.java.zzw.pay.product.abroad;
+package com.wall.myproject4test.java.zzw.designpattern.factory.pay.product.abroad;
 
 /**
  * 国外支付

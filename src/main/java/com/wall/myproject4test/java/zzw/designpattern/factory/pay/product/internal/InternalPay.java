@@ -1,4 +1,4 @@
-package com.wall.myproject4test.java.zzw.pay.product.internal;
+package com.wall.myproject4test.java.zzw.designpattern.factory.pay.product.internal;
 
 /**
  * 国内支付
