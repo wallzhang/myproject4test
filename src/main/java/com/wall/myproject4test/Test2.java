@@ -1,5 +1,7 @@
 package com.wall.myproject4test;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -7,13 +9,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Test2 {
 
     public static void main(String[] args) {
-
-        System.out.println(isPowerOfTwo(6));
-//        int[] nums1 = {};
-//        int[] nums2 = {1,2,3,4,5,6};
-//        double res = new Test2().findMedianSortedArrays(nums1,nums2);
-//        System.out.println(res);
+        JSONObject t1 = new JSONObject();
+        t1.put("name","zs");
+//        boolean is = TestJson(t1);
+        System.out.println(TestJson(t1).toString());
     }
+
+    private static JSONObject TestJson(JSONObject t1) {
+        JSONObject t2 = new JSONObject();
+        t2.put("age",18);
+        t1 = t2;
+        return t1;
+
+    }
+
     public int test(){
         int[] nums = {1,6,74};
         Map<Integer, Integer> map = new HashMap<>();
