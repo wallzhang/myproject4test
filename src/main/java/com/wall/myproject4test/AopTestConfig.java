@@ -15,8 +15,17 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class AopTestConfig {
 
     public static void main(String[] args) {
-        ApplicationContext app = new AnnotationConfigApplicationContext(AopTestConfig.class);
-        WallServiceImpl wallService = app.getBean(WallServiceImpl.class);
-        wallService.fun1();
+//        ApplicationContext app = new AnnotationConfigApplicationContext(AopTestConfig.class);
+//        WallServiceImpl wallService = app.getBean(WallServiceImpl.class);
+//        wallService.fun1();
+        String str = String.format("%s流程已经在停止，请勿重复停止！", "什么东西");
+        System.out.println(str);
+
+        Integer a = 3;
+
+        switch (a){
+            case 1:
+                break;
+        }
     }
 }
