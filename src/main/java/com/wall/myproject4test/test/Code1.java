@@ -1,12 +1,14 @@
 package com.wall.myproject4test.test;
 
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
 import io.micrometer.core.instrument.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Map.Entry.comparingByValue;
 
 /**
  * @Description: 给5位数  0<= x <=99999
@@ -20,28 +22,28 @@ public class Code1 {
     static String[] flags = {"个位", "十位", "百位", "千位", "万位"};
 
     public static void main(String[] args) {
-//        double a = -0.3;
-//        a -= 0.03;
-//        System.out.println(Double.valueOf(a));
-//        System.out.println(String.valueOf(a));
-//        System.out.println(String.format("%.2f",a));
-//        int num = 68721;
-//        dealInt(num);
-//        String name = "";
-//        Map<String, Object> tes = new HashMap<>();
-//        System.out.println(tes.get("name")==null);
-//        System.out.println(String.valueOf(tes.get("name")));
-//        System.out.println(StringUtils.isNotBlank(String.valueOf(tes.get("name"))));
-//        System.out.println(tes.get("name")==null);
-//        tes.put("name",name);
-//        System.out.println(tes.get("name")=="");
-        Map<String, String> map = new HashMap<>();
-        map.put("1","a");
-        map.put("2","b");
-        List<Map<String, String>> objects = new ArrayList<>();
-        objects.add(map);
-        System.out.println(objects);
-        System.out.println(objects.toString());
+        Map<String,Integer> mapRepeat = new HashMap<>();
+        mapRepeat.put("aa", 1);
+        mapRepeat.put("bb", 45);
+        mapRepeat.put("cc", 32);
+        mapRepeat.put("dd", 226);
+        mapRepeat.put("ee", 16);
+        mapRepeat.put("ff", 320);
+        mapRepeat.put("gg", 99);
+        final Map<String, Integer> sortedByCount1 = mapRepeat.entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(comparingByValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        System.out.println(JSON.toJSONString(sortedByCount1));
+        Iterator<Map.Entry<String, Integer>> iterator = sortedByCount1.entrySet().iterator();
+        int index = 0;
+        List<String> list = new ArrayList<>();
+        while (iterator.hasNext()&&index<5){
+            Map.Entry<String, Integer> next = iterator.next();
+            list.add(next.getKey());
+            index++;
+        }
+        System.out.println(list);
     }
 
     private static void dealInt(int num) {
