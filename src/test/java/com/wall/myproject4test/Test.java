@@ -1,5 +1,7 @@
 package com.wall.myproject4test;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +16,37 @@ public class Test {
     static int age ;
     public static void main(String[] args) {
 
+//        List<String> list = new ArrayList<>();
+//        list.add("1");
+//        list.add("2");
+//        list.add("2");
+//        list.add("3");
+//        list.add("4");
+//        list.add("3");
+//        System.out.println(list);
+//        // 1.基于代码逻辑保留最新的数据
+//        Collections.reverse(list);
+//        System.out.println(list);
+//        Set<String> set = new HashSet<>();
+//        Iterator<String> iterator = list.iterator();
+//        while (iterator.hasNext()){
+//            String key = iterator.next();
+//            if(!set.add(key)){
+//                // set中已存在同名数据
+//                iterator.remove();
+//            }
+//        }
+//        System.out.println(list);
+//          String jsonArrays = "[[1,2,3],[4,5,6],[7,8,9]]";
+//        try {
+//            JSONArray jsonArray = new JSONArray(jsonArrays);
+//            jsonArray.getJSONArray(0).length();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//          int[][] res2 = Arrays.;
+//          int[][] res1 = {{1,2,3},{4,5,6}};
+//        System.out.println(res1.);
 //        int[][] res = new int[4][2];
 ////        Stack stack = new Stack();
 ////        List list = new ArrayList();
@@ -26,11 +59,11 @@ public class Test {
 //        System.out.println(new  Test().largestPerimeter(A));
 
 //        int[] arr1 = {2,3,1,3,2,4,6,7,9,2,19};
-        int[] arr1 = {2,3,1,3,2};
-//        int[] arr2 = {2,1,4,3,9,6};
-        int[] arr2 = {2,1};
-        int[] res = new Test().relativeSortArray(arr1,arr2);
-        System.out.println(res);
+//        int[] arr1 = {2,3,1,3,2};
+////        int[] arr2 = {2,1,4,3,9,6};
+//        int[] arr2 = {2,1};
+//        int[] res = new Test().relativeSortArray(arr1,arr2);
+//        System.out.println(res);
     }
 
     private int[] res(){
