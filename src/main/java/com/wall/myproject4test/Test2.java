@@ -1,31 +1,60 @@
 package com.wall.myproject4test;
 
 import com.alibaba.fastjson.JSON;
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import javax.xml.soap.SOAPMessage;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Test2 {
-    static String str = "";
-
+    static String str = "{ \"size\":8, \"data\":[[ \"12-09\",359639],[\"12-10\",11622314],[\"12-11\",11045943],[ \"12-12\",12876459],[ \"12-13\",150789261],[ \"12-14\",10837049], [\"12-15\",9914112],[ \"12-16\",8399282 ]], \"columnList\":[{\"name\": \"time\",\"alias\":\"time\"},{\"name\":\"防火墙Deny数\", \"alias\":\"name\"}] }";
     public static void main(String[] args) {
-        System.out.println(1000 == 1000);
-//        Integer[][] integers = new Integer[2][2];
-//        Integer[] a = {123,123};
-//        Integer[] b = {123,123};
-//        integers[0] = a;
-//        integers[1] = b;
-//        TestInt testInt = new TestInt();
-//        testInt.setIntegers(integers);
-//        String string = JSON.toJSONString(testInt);
-//        System.out.println(string);
-//        List<TestInt> t = new ArrayList<>();
-//        t.add(testInt);
-//        t.add(testInt);
-//        t.add(testInt);
-//        System.out.println(JSON.toJSONString(t));
+        String chartName = "近7日攻击态势分析-防火墙deny";
+        Map<String, Integer> netIpMap = new HashMap<>();
+        Map<String, Integer> forbidIpMap = new HashMap<>();
+        Map<String, Integer> denyMap = new HashMap<>();
+        JSONObject jsonObject = JSONObject.parseObject(str);
+        // json处理后存入result
+        JSONArray jsonArray = jsonObject.getJSONArray("data");
+        JSONArray columnListJsonArray = jsonObject.getJSONArray("columnList");
+        boolean hasBanIp = false;
+        boolean hasNetIp = false;
+        boolean hasDeny = false;
+        for (int j = 0; j < columnListJsonArray.size(); j++) {
+            String name = columnListJsonArray.getJSONObject(j).getString("name");
+            System.out.println(name);
+            if ("互联网IP数".equals(name)) {
+                hasNetIp = true;
+            } else if ("封禁IP数".equals(name)) {
+                hasBanIp = true;
+            } else if ("防火墙Deny数".equals(name)) {
+                hasDeny = true;
+            }
+        }
+        if ("折线图-封禁IP数&互联网IP数".equals(chartName)) {
+            for (int j = 0; j < jsonArray.size(); j++) {
+                JSONArray jsonArray2 = jsonArray.getJSONArray(j);
+                if (hasNetIp && hasBanIp) {
+                    netIpMap.put(jsonArray2.getString(0), jsonArray2.getInteger(1));
+                    forbidIpMap.put(jsonArray2.getString(0), jsonArray2.getInteger(2));
+                } else if (hasNetIp && !hasBanIp) {
+                    netIpMap.put(jsonArray2.getString(0), jsonArray2.getInteger(1));
+                } else if (!hasNetIp && hasBanIp) {
+                    forbidIpMap.put(jsonArray2.getString(0), jsonArray2.getInteger(1));
+                }
+            }
+        } else if ("近7日攻击态势分析-防火墙deny".equals(chartName)) {
+            for (int j = 0; j < jsonArray.size(); j++) {
+                JSONArray jsonArray2 = jsonArray.getJSONArray(j);
+                if (hasDeny) {
+                    denyMap.put(jsonArray2.getString(0), jsonArray2.getInteger(1));
+                }
+            }
+        }
+        System.out.println(denyMap);
+        System.out.println("1111");
     }
 
     private static class TestInt {
@@ -39,12 +68,12 @@ public class Test2 {
             this.integers = integers;
         }
     }
-    private static JSONObject TestJson(JSONObject t1) {
-        JSONObject t2 = new JSONObject();
-        t2.put("age", 18);
-        t1 = t2;
-        return t1;
-    }
+//    private static JSONObject TestJson(JSONObject t1) {
+//        JSONObject t2 = new JSONObject();
+//        t2.put("age", 18);
+//        t1 = t2;
+//        return t1;
+//    }
 
     public int test() {
         int[] nums = {1, 6, 74};
